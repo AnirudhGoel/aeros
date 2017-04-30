@@ -5,11 +5,8 @@ from django.shortcuts import render, HttpResponse
 from urllib.request import urlopen
 from bs4 import BeautifulSoup, SoupStrainer
 
-from django.shortcuts import render
 import sslresolved
 from lxml import html
-import requests
-
 
 # The selenium module
 from selenium import webdriver
@@ -20,15 +17,15 @@ from selenium.webdriver.common.by import By
 
 # Create your views here.
 def scrape_data(request):
-	query = request.GET.get('q', None)
+	#query = request.GET.get('q', None)
 	age = requests.get('https://www.britannica.com/place/Argentina')
 	tree = html.fromstring(page.content)
 
-	intro = tree.xpath('//*[@id="toc33101"]/p/text()')
+	data = tree.xpath('//*[@id="content"]/div[2]/div[2]/div/div/article/text()')
 
-	data = ''.join(intro)
+	data = ''.join(data)
 
-	html = "<html><body>%s </body></html>" % data
+	html = "<html><body> %s </body></html>" % data
 	return HttpResponse(html)
 
 
