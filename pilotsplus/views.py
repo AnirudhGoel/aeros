@@ -72,42 +72,33 @@ def calc(request, f_code):
 
 	stateFromLatLng = "http://api.geonames.org/findNearbyPlaceNameJSON?formatted=true&lat=" + lat + "&lng=" + lon + "%20&username=demo&style=full"
 
-	data = BeautifulSoup(urlopen(stateFromLatLng))
-	data = json.loads(str(data))
+	# data = BeautifulSoup(urlopen(stateFromLatLng))
+	# data = json.loads(str(data))
+	data = requests.get(stateFromLatLng).json()
 	state = data["geonames"][0]["adminName1"]
-    
+	britannicaUrl = 'https://www.britannica.com/place/' + state
 
-	page = requests.get('https://www.britannica.com/place/%s') % state
-	tree = html.fromstring(page.content)
+	soup3 = BeautifulSoup(urlopen(britannicaUrl))
+	data = str(soup3.find("article"))
 
-	data = tree.xpath('//*[@id="content"]/div[2]/div[2]/div/div/article/text()')
-
-	data = ''.join(data)
+	# page = requests.get('https://www.britannica.com/place/' + state)
+	# tree = html.fromstring(page.content)
+	# data = tree.xpath('//*[@id="content"]/div[2]/div[2]/div/div/article/text()')
+	# data = ''.join(data)
 
 
 	
-	foursquare = "https://api.foursquare.com/v2/venues/explore?ll=%s,%s" % lat, lon
+	foursquare = "https://api.foursquare.com/v2/venues/explore?ll=" + lat + "," + lon + "&client_id=PMKVGM5O4DYPNJN3FU5FDKS3VFDXXYFFQWX3RYQMBD22AVNZ&client_secret=RVLTJ0B3HKTSNCF3WMA3TK1BVOHW0PGFPT0H0TRUUIJYEXIG&v=20170430"
 
-	info = BeautifulSoup(urlopen(foursquare))
-	info = json.loads(str(info))
+	info = requests.get(foursquare).json()
+	# info = BeautifulSoup(urlopen(foursquare))
+	# info = json.loads(str(info))
 
-	name = info["venue"]["name"]
-
-	formatted_address = info["venue"]["formattedAddress"]
+	name = info["response"]["groups"][0]["items"][0]["venue"]["name"]
+	formatted_address = info["response"]["groups"][0]["items"][0]["venue"]["location"]["formattedAddress"]
 
 	object_list = [data,name,formatted_address]
 
 	object_list = json.dumps(object_list)
 
-	# context = {
-	# 'object_list' : object_list
-	# }
-
 	return HttpResponse(object_list, content_type = "application/json")
-	# return render(request, 'data.html', context)
-
-
-	
-
-
-
