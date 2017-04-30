@@ -32,6 +32,13 @@ def f_info(request, f_code):
 	return render(request, "f_info.html", context)
 
 
+def f_info2(request, lat, lon):
+	context = {
+		"lat": lat,
+		"lon": lon
+	}
+	return render(request, "f_info2.html", context)
+
 
 def calc(request, f_code):
 	# baseurl = "https://uk.flightaware.com/live/flight/GOW544"
@@ -70,6 +77,52 @@ def calc(request, f_code):
 	lon = lon[0].string
 	# list_of_attributes = {"class" : "some-class"} # A list of attributes that you want to check in a tag
 	# tag = parser.findAll('video',attrs=list_of_attributes)
+
+	stateFromLatLng = "http://api.geonames.org/findNearbyPlaceNameJSON?formatted=true&lat=" + lat + "&lng=" + lon + "%20&username=demo&style=full"
+
+	# data = BeautifulSoup(urlopen(stateFromLatLng))
+	# data = json.loads(str(data))
+	data = requests.get(stateFromLatLng).json()
+	state = data["geonames"][0]["adminName1"]
+	if state == "NCT":
+		state = "Delhi"
+
+	state_list = state.split(" ")
+	state = "-".join(state_list)
+	britannicaUrl = 'https://www.britannica.com/place/' + state
+	# britannicaUrl = urllib.parse.urlencode(britannicaUrl)
+
+	soup3 = BeautifulSoup(urlopen(britannicaUrl))
+	data = str(soup3.find("article"))
+
+	# page = requests.get('https://www.britannica.com/place/' + state)
+	# tree = html.fromstring(page.content)
+	# data = tree.xpath('//*[@id="content"]/div[2]/div[2]/div/div/article/text()')
+	# data = ''.join(data)
+
+
+	
+	foursquare = "https://api.foursquare.com/v2/venues/explore?ll=" + lat + "," + lon + "&client_id=PMKVGM5O4DYPNJN3FU5FDKS3VFDXXYFFQWX3RYQMBD22AVNZ&client_secret=RVLTJ0B3HKTSNCF3WMA3TK1BVOHW0PGFPT0H0TRUUIJYEXIG&v=20170430"
+
+	info = requests.get(foursquare).json()
+	# info = BeautifulSoup(urlopen(foursquare))
+	# info = json.loads(str(info))
+
+	name = info["response"]["groups"][0]["items"][0]["venue"]["name"]
+	formatted_address = info["response"]["groups"][0]["items"][0]["venue"]["location"]["formattedAddress"]
+
+	object_list = [data,name,formatted_address, state]
+
+	object_list = json.dumps(object_list)
+
+	return HttpResponse(object_list, content_type = "application/json")
+
+
+
+def calc2(request, lat, lon):
+
+	# lat = request.GET['lat']
+	# lon = request.GET['lon']
 
 	stateFromLatLng = "http://api.geonames.org/findNearbyPlaceNameJSON?formatted=true&lat=" + lat + "&lng=" + lon + "%20&username=demo&style=full"
 
