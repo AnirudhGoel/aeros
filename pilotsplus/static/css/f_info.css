@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:500,700');
+body {
+	font-family: 'Work Sans', sans-serif;
+}
+
+
+.topbar {
+	width: 100vw;
+	background-color: #5B1F1E;
+	min-height: 65px;
+	text-align: left;
+}
+
+.small-logo {
+	height: 55px;
+	padding-top: 5px;
+	padding-left: 20px;
+}
+
+.big-logo {
+	height: 55px;
+	padding-top: 15px;
+	margin-left: 39vw;
+}
+
+.heading {
+	margin-top: 30px;
+	color: #5B1F1E;
+	font-size: 30px;
+	font-weight: 700;
+}
+
+.box {
+	border: 2px solid #5B1F1E;
+	width: 80vw;
+	margin-left: 10vw;
+	margin-top: 20px;
+}

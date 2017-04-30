@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="author" content="Anirudh Goel" />
+		<meta name="designer" content="Aaditya Suri" />
+
+		<title>Anirudh Goel</title>
+
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/f_info.css' %}">
+	</head>
+
+	<body>
+		<div class="topbar">
+			<img src="{% static 'img/a.png' %}" alt="Logo" class="small-logo">
+			<img src="{% static 'img/aeros.png' %}" alt="Logo" class="big-logo">
+		</div>
+
+		<div class="container">
+			<div class="heading">FLIGHT <span style="font-weight: 500;">INFORMATION</span></div>
+		</div>
+
+		<div class="box"></div>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="{% static 'js/f_info.js' %}"></script>
+	</body>
+</html>

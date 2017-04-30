@@ -7,7 +7,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup, SoupStrainer
 
 from django.shortcuts import render
-import sslresolved
+from . import sslresolved
 from lxml import html
 import requests
 
@@ -20,6 +20,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 # Create your views here.
+def index(request):
+	context = {}
+	return render(request, "index.html", context)
+
+def f_info(request, f_code):
+	context = {
+		"f_code": f_code
+	}
+	return render(request, "f_info.html", context)
+
+
 def scrape_data(request):
 	query = request.GET.get('q', None)
 	age = requests.get('https://www.britannica.com/place/Argentina')
