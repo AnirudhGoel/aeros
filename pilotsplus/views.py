@@ -1,6 +1,7 @@
 import os
 import sys
 import requests
+import json
 from django.shortcuts import render, HttpResponse
 from urllib.request import urlopen
 from bs4 import BeautifulSoup, SoupStrainer
@@ -34,7 +35,6 @@ def calc(request, f_code):
 
 	# complete_url = "https://uk.flightaware.com/live/flight/GOW544/history/20170429/1700Z/VIDP/VABB/tracklog"
 
-
 	driver = webdriver.Chrome("/Users/anirudhgoel/Downloads/chromedriver") # if you want to use chrome, replace Firefox() with Chrome()
 	driver.get(complete_url) # load the web page
 	WebDriverWait(driver, 50).until(EC.visibility_of_element_located((By.ID, "tracklogTable"))) # waits till the element with the specific id appears
@@ -52,7 +52,13 @@ def calc(request, f_code):
 	# list_of_attributes = {"class" : "some-class"} # A list of attributes that you want to check in a tag
 	# tag = parser.findAll('video',attrs=list_of_attributes)
 
-	return HttpResponse(lat + "          " + lon, content_type="plain/text")
+	stateFromLatLng = "http://api.geonames.org/findNearbyPlaceNameJSON?formatted=true&lat=" + lat + "&lng=" + lon + "%20&username=demo&style=full"
+
+	data = BeautifulSoup(urlopen(stateFromLatLng))
+	data = json.loads(str(data))
+	state = data["geonames"][0]["adminName1"]
+
+	return HttpResponse(state)
 
 
 
