@@ -8,9 +8,8 @@ from bs4 import BeautifulSoup, SoupStrainer
 
 from django.shortcuts import render
 from . import sslresolved
-from lxml import html
-import requests
 
+from lxml import html
 
 # The selenium module
 from selenium import webdriver
@@ -20,6 +19,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 # Create your views here.
+
 def index(request):
 	context = {}
 	return render(request, "index.html", context)
@@ -30,18 +30,6 @@ def f_info(request, f_code):
 	}
 	return render(request, "f_info.html", context)
 
-
-def scrape_data(request):
-	query = request.GET.get('q', None)
-	age = requests.get('https://www.britannica.com/place/Argentina')
-	tree = html.fromstring(page.content)
-
-	intro = tree.xpath('//*[@id="toc33101"]/p/text()')
-
-	data = ''.join(intro)
-
-	html = "<html><body>%s </body></html>" % data
-	return HttpResponse(html)
 
 
 def calc(request, f_code):
@@ -87,8 +75,39 @@ def calc(request, f_code):
 	data = BeautifulSoup(urlopen(stateFromLatLng))
 	data = json.loads(str(data))
 	state = data["geonames"][0]["adminName1"]
+    
 
-	return HttpResponse(state)
+	page = requests.get('https://www.britannica.com/place/%s') % state
+	tree = html.fromstring(page.content)
+
+	data = tree.xpath('//*[@id="content"]/div[2]/div[2]/div/div/article/text()')
+
+	data = ''.join(data)
+
+
+	
+	foursquare = "https://api.foursquare.com/v2/venues/explore?ll=%s,%s" % lat, lon
+
+	info = BeautifulSoup(urlopen(foursquare))
+	info = json.loads(str(info))
+
+	name = info["venue"]["name"]
+
+	formatted_address = info["venue"]["formattedAddress"]
+
+	object_list = [data,name,formatted_address]
+
+	object_list = json.dumps(object_list)
+
+	# context = {
+	# 'object_list' : object_list
+	# }
+
+	return HttpResponse(object_list, content_type = "application/json")
+	# return render(request, 'data.html', context)
+
+
+	
 
 
 
