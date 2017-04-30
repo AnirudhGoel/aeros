@@ -17,18 +17,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 # Create your views here.
-def scrape_data(request):
-	#query = request.GET.get('q', None)
-	age = requests.get('https://www.britannica.com/place/Argentina')
-	tree = html.fromstring(page.content)
-
-	data = tree.xpath('//*[@id="content"]/div[2]/div[2]/div/div/article/text()')
-
-	data = ''.join(data)
-
-	html = "<html><body> %s </body></html>" % data
-	return HttpResponse(html)
-
+	
 
 def calc(request, f_code):
 	# baseurl = "https://uk.flightaware.com/live/flight/GOW544"
@@ -73,8 +62,36 @@ def calc(request, f_code):
 	data = BeautifulSoup(urlopen(stateFromLatLng))
 	data = json.loads(str(data))
 	state = data["geonames"][0]["adminName1"]
+    
 
-	return HttpResponse(state)
+	page = requests.get('https://www.britannica.com/place/%s') % state
+	tree = html.fromstring(page.content)
+
+	data = tree.xpath('//*[@id="content"]/div[2]/div[2]/div/div/article/text()')
+
+	data = ''.join(data)
+
+
+	
+	foursquare = "https://api.foursquare.com/v2/venues/explore?ll=%s,%s" % lat, lon
+
+	info = BeautifulSoup(urlopen(foursquare))
+	info = json.loads(str(info))
+
+	name = info["venue"]["name"]
+
+	formatted_address = info["venue"]["formattedAddress"]
+
+	object_list = [data,name,formatted_address]
+
+	context = {
+	'object_list' : object_list
+	}
+
+	return render(request, 'data.html', {})
+
+
+	
 
 
 
