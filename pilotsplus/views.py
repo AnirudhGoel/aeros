@@ -2,8 +2,9 @@ import os
 import sys
 import requests
 import json
-from django.shortcuts import render, HttpResponse
 from urllib.request import urlopen
+from urllib.parse import urlencode, quote_plus
+from django.shortcuts import render, HttpResponse
 from bs4 import BeautifulSoup, SoupStrainer
 
 from django.shortcuts import render
@@ -76,7 +77,13 @@ def calc(request, f_code):
 	# data = json.loads(str(data))
 	data = requests.get(stateFromLatLng).json()
 	state = data["geonames"][0]["adminName1"]
+	if state == "NCT":
+		state = "Delhi"
+
+	state_list = state.split(" ")
+	state = "-".join(state_list)
 	britannicaUrl = 'https://www.britannica.com/place/' + state
+	# britannicaUrl = urllib.parse.urlencode(britannicaUrl)
 
 	soup3 = BeautifulSoup(urlopen(britannicaUrl))
 	data = str(soup3.find("article"))
@@ -97,7 +104,7 @@ def calc(request, f_code):
 	name = info["response"]["groups"][0]["items"][0]["venue"]["name"]
 	formatted_address = info["response"]["groups"][0]["items"][0]["venue"]["location"]["formattedAddress"]
 
-	object_list = [data,name,formatted_address]
+	object_list = [data,name,formatted_address, state]
 
 	object_list = json.dumps(object_list)
 

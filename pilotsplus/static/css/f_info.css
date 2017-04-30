@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Work+Sans:500,700');
 body {
 	font-family: 'Work Sans', sans-serif;
+	font-size: 2.5em;
 }
 
 
@@ -24,19 +25,28 @@ body {
 }
 
 .heading {
-	margin-top: 30px;
+	margin-top: 40px;
 	color: #5B1F1E;
 	font-size: 30px;
 	font-weight: 700;
 }
 
 .box {
-	border: 2px solid #5B1F1E;
+	/*border: 2px solid #5B1F1E;*/
 	width: 80vw;
 	margin-left: 10vw;
-	margin-top: 20px;
+	margin-top: 80px;
 }
 
 .loader {
-	background-size: cover;
+	padding-left: 350px;
+	/*width: 5vw;*/
+}
+
+.loader img {
+	width: 450px;
+}
+
+.content {
+	padding: 20px 20px 20px 20px !important;
 }
