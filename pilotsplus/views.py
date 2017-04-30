@@ -6,6 +6,11 @@ from django.shortcuts import render, HttpResponse
 from urllib.request import urlopen
 from bs4 import BeautifulSoup, SoupStrainer
 
+from django.shortcuts import render
+import sslresolved
+from lxml import html
+import requests
+
 
 # The selenium module
 from selenium import webdriver
@@ -13,6 +18,20 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+
+# Create your views here.
+def scrape_data(request):
+	query = request.GET.get('q', None)
+	age = requests.get('https://www.britannica.com/place/Argentina')
+	tree = html.fromstring(page.content)
+
+	intro = tree.xpath('//*[@id="toc33101"]/p/text()')
+
+	data = ''.join(intro)
+
+	html = "<html><body>%s </body></html>" % data
+	return HttpResponse(html)
+
 
 def calc(request, f_code):
 	# baseurl = "https://uk.flightaware.com/live/flight/GOW544"
@@ -59,10 +78,6 @@ def calc(request, f_code):
 	state = data["geonames"][0]["adminName1"]
 
 	return HttpResponse(state)
-
-
-
-
 
 
 
