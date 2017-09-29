@@ -9,13 +9,13 @@ Aeros provides you complete information, along with the points of interest, abou
 <br><br>
 ### Installation
 
-```bash
+```
 git clone https://github.com/AnirudhGoel/aeros
 cd aeros
 pip install -r requirements.txt
 python manage.py runserver
 ```
-<br><br>
+<br>
 ### Usage
 This web-app has two types of inputs-
 
