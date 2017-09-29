@@ -15,7 +15,8 @@ cd aeros
 pip install -r requirements.txt
 python manage.py runserver
 ```
-<br>
+
+
 ### Usage
 This web-app has two types of inputs-
 
