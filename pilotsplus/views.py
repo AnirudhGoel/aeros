@@ -44,7 +44,7 @@ def calc(request, f_code):
 	# baseurl = "https://uk.flightaware.com/live/flight/GOW544"
 	baseurl = "https://uk.flightaware.com/live/flight/" + f_code
 
-	driver = webdriver.Chrome("/Users/anirudhgoel/Downloads/chromedriver") # if you want to use chrome, replace Firefox() with Chrome()
+	driver = webdriver.Chrome("/Users/anirudhgoel/Projects/aeros/chromedriver") # if you want to use chrome, replace Firefox() with Chrome()
 	driver.get(baseurl) # load the web page
 	WebDriverWait(driver, 50).until(EC.visibility_of_element_located((By.CLASS_NAME, "halfButton"))) # waits till the element with the specific id appears
 	src = driver.page_source # gets the html source of the page
@@ -61,7 +61,7 @@ def calc(request, f_code):
 
 	# complete_url = "https://uk.flightaware.com/live/flight/GOW544/history/20170429/1700Z/VIDP/VABB/tracklog"
 
-	driver = webdriver.Chrome("/Users/anirudhgoel/Downloads/chromedriver") # if you want to use chrome, replace Firefox() with Chrome()
+	driver = webdriver.Chrome("/Users/anirudhgoel/Projects/aeros/chromedriver") # if you want to use chrome, replace Firefox() with Chrome()
 	driver.get(complete_url) # load the web page
 	WebDriverWait(driver, 50).until(EC.visibility_of_element_located((By.ID, "tracklogTable"))) # waits till the element with the specific id appears
 	src = driver.page_source # gets the html source of the page
